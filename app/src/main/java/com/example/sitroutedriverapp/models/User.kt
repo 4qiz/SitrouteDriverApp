@@ -5,7 +5,7 @@ data class User (
     var firstName: String = "",
     var patronymic: String? = null,
     var secondName: String = "",
-    var password: ByteArray = byteArrayOf(),
+    var password: String = "",
     var login: String = "",
     var driver: Driver? = null
 )
