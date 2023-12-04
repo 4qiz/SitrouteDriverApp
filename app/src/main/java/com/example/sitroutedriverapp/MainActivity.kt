@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.sitroutedriverapp.screens.LoginScreen
+import com.example.sitroutedriverapp.screens.ScreenMain
 import com.example.sitroutedriverapp.ui.theme.SitrouteDriverAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginScreen()
+                    ScreenMain()
                 }
             }
         }
