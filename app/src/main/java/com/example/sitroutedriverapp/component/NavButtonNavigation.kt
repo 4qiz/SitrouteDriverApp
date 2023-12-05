@@ -26,13 +26,14 @@ fun NavButtonNavugation(navigation: NavHostController, modifier: Modifier = Modi
             label = { Text("Карта") },
             selected = selectedItem.value == Routes.Home.route,
             onClick = { navigation.navigate(Routes.Home.route)
-                selectedItem.value = Routes.Home.route }
+                         selectedItem.value = Routes.Home.route }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Message, contentDescription = "") },
             label = { Text("Чат") },
             selected = selectedItem.value == Routes.Chat.route,
-            onClick = { navigation.navigate(Routes.Chat.route) }
+            onClick = { navigation.navigate(Routes.Chat.route)
+                         selectedItem.value = Routes.Chat.route}
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.DirectionsTransit, contentDescription = "") },
