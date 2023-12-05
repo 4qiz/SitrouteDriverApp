@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.sitroutedriverapp.Connection
 import com.example.sitroutedriverapp.R
 import com.example.sitroutedriverapp.Routes
 import com.example.sitroutedriverapp.models.User
@@ -112,16 +113,15 @@ fun LoginScreen(navController: NavHostController) {
 
             Button(modifier = Modifier.width(270.dp).padding(0.dp,20.dp,0.dp,0.dp),
                 onClick = {
-                    navController.navigate(Routes.Home.route)
-                    //////////
-                val repos = settingsConnection().currentUser(login, password)
-                repos.enqueue(object : Callback<User> {
+                val user = settingsConnection().getCurrentUser(login, password)
+                user.enqueue(object : Callback<User> {
                     override fun onResponse(call: Call<User>, response: Response<User>) {
                         if (response.isSuccessful) {
                             val currentUser = response.body()
                             if (currentUser?.idUser == 0) {
                                 errorMessage = "* Неправильный логин или пароль"
                             } else if (currentUser?.driver != null) {
+                                Connection.CurrentUser = currentUser
                                 navController.navigate(Routes.Home.route)
                             } else {
                                 errorMessage = "У вас нет прав для этого приложения"
