@@ -39,7 +39,7 @@ fun HomeScreen(navController: NavHostController) {
 @Composable
 fun ScaffoldWithTopBar(navController: NavHostController) {
     Scaffold(
-        bottomBar = {NavButtonNavugation(navigation = navController)}
+        bottomBar = { NavButtonNavugation(navigation = navController)}
     ){
         Column(
             modifier = Modifier

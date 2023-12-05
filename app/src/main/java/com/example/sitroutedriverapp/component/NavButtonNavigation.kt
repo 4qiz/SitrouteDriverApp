@@ -36,7 +36,7 @@ fun NavButtonNavugation(navigation: NavHostController, modifier: Modifier = Modi
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.DirectionsTransit, contentDescription = "") },
-            label = { Text("Состояние машина") },
+            label = { Text("Состояние") },
             selected = selectedItem.value == Routes.Status.route,
             onClick = { navigation.navigate(Routes.Status.route)
             selectedItem.value = Routes.Status.route}
