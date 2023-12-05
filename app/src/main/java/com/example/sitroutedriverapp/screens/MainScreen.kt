@@ -15,21 +15,22 @@ fun ScreenMain(){
     val navController = rememberNavController()
     val itemSources = remember { mutableStateOf(Routes.Login.route) }
     Column {
-        if(itemSources.value != Routes.Login.route) ScaffoldWithTopBar(navController)
+        if(itemSources.value != Routes.Login.route)
+            ScaffoldWithTopBar(navController)
         NavHost(navController = navController, startDestination = Routes.Login.route) {
             composable(Routes.Login.route) {
                 LoginScreen(navController = navController)
             }
             composable(Routes.Home.route) {
-                HomeScreen(navController = navController)
+                HomeScreen()
                 itemSources.value = Routes.Home.route
             }
             composable(Routes.Status.route) {
-                StatusScreen(navController = navController)
+                StatusScreen()
                 itemSources.value = Routes.Status.route
             }
             composable(Routes.Chat.route) {
-                StatusScreen(navController = navController)
+                ChatScreen()
                 itemSources.value = Routes.Chat.route
             }
         }

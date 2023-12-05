@@ -23,7 +23,7 @@ import com.example.sitroutedriverapp.R
 import com.example.sitroutedriverapp.component.NavButtonNavugation
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
