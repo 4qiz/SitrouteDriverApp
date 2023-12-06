@@ -59,10 +59,17 @@ fun ChatScreen() {
                         idSender = Connection.CurrentUser!!.idUser
                     )
                     if (newMessage != "") {
-                        val response = settingsConnection().sendMessage(message)
-                        if(response.isSuccessful){
-                        messages = messages + message
-                        }
+                        val listCall = settingsConnection().sendMessage(message)
+                        listCall.enqueue(object : Callback<Unit> {
+                            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                                messages = messages + message
+                                newMessage = ""
+                            }
+
+                            override fun onFailure(call: Call<Unit>, t: Throwable) {
+
+                            }
+                        })
                     }
                 }) { Icon(Icons.Filled.Send, contentDescription = "") }
             }
