@@ -109,11 +109,12 @@ fun Messages(messages: List<Message>) {
     LazyColumn(state = lazyColumnListState) {
         items(messages) { message ->
             MessageListItem(message)
+            LaunchedEffect(messages.size) {
+                lazyColumnListState.scrollToItem(messages.size - 1)
+            }
         }
     }
-    LaunchedEffect(messages.size) {
-        lazyColumnListState.scrollToItem(messages.size - 1)
-    }
+
 }
 
 @Composable
