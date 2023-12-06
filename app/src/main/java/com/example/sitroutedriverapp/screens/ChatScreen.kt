@@ -40,6 +40,7 @@ import com.example.sitroutedriverapp.Connection
 import com.example.sitroutedriverapp.models.Message
 import com.example.sitroutedriverapp.settingsConnection
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.select
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -92,6 +93,7 @@ fun ChatScreen() {
                 }, Modifier.weight(0.1f)) { Icon(Icons.Filled.Send, contentDescription = "") }
             }
         }) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .padding(innerPadding),
