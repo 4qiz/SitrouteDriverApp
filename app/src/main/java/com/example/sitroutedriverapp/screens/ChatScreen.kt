@@ -1,6 +1,7 @@
 package com.example.sitroutedriverapp.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,11 +36,13 @@ fun ChatScreen() {
             }
 
             override fun onFailure(call: Call<List<Message>>, t: Throwable) {
-                //
+                messages.add(Message(1, "ошибка", null, null, "", null, null))
             }
         })
-        for(message in messages) {
-            Text(message.value)
+        Column{
+            for(message in messages) {
+                Text(message.value)
+            }
         }
     }
 }

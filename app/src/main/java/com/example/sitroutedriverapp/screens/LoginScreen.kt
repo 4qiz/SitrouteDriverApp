@@ -132,7 +132,7 @@ fun LoginScreen(navController: NavHostController) {
                     override fun onFailure(call: Call<User>, t: Throwable) {
                         errorMessage = "Ошибка"
                     }
-                },
+                }
                     )
             }) {
                 Text("Войти",
