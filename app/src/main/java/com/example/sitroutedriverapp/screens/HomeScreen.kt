@@ -63,26 +63,21 @@ fun HomeScreen() {
 @Composable
 fun RoutesView() {
     var errorMessage by rememberSaveable{mutableStateOf("Ошибка")}
-    var routes by rememberSaveable { mutableStateOf<List<Route>>(emptyList()) }
-    val listCall = settingsConnection().getRoutes(Connection.CurrentUser!!.idUser)
-    listCall.enqueue(object : Callback<List<Route>> {
-        override fun onResponse(call: Call<List<Route>>, response: Response<List<Route>>) {
-            val routesList = response.body() ?: emptyList()
-            routes = routesList
+    var route by rememberSaveable { mutableStateOf<Route?>(null) }
+    val call = settingsConnection().getRoutes(Connection.CurrentUser!!.idUser)
+    call.enqueue(object : Callback<Route> {
+        override fun onResponse(call: Call<Route>, response: Response<Route>) {
+            route = response.body()
+            println()
             //Если запрос сработал
         }
 
-
-        override fun onFailure(call: Call<List<Route>>, t: Throwable) {
+        override fun onFailure(call: Call<Route>, t: Throwable) {
             errorMessage = "Пока"
             //Если запрос не сработал
         }
     })
-    LazyColumn {
-        items(routes) { route ->
-            Text(route.name)
-        }
-    }
+    Text(route?.idRoute.toString())
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

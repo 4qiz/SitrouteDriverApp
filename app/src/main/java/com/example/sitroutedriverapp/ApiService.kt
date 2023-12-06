@@ -18,7 +18,7 @@ interface ApiService {
     fun getMessages(@Path("idDriver") idDriver: Int): Call<List<Message>>
 
     @GET("/routesByBusStation/{idDriver}")
-    fun getRoutes(@Path("idDriver") idDriver: Int): Call<List<Route>>
+    fun getRoutes(@Path("idDriver") idDriver: Int): Call<Route>
 
     @POST("/message")
     fun sendMessage(@Body message: Message): Call<Unit>
