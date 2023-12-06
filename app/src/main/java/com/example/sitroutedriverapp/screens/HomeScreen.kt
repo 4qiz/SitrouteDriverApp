@@ -27,10 +27,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sitroutedriverapp.Connection
 import com.example.sitroutedriverapp.R
 import com.example.sitroutedriverapp.Routes
 import com.example.sitroutedriverapp.component.ButtonNavigation
-import okhttp3.Route
+import com.example.sitroutedriverapp.models.Message
+import com.example.sitroutedriverapp.models.Route
+import com.example.sitroutedriverapp.settingsConnection
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun HomeScreen() {
@@ -41,7 +47,17 @@ fun HomeScreen() {
     ) {
         DrawerHeader()
         Text("Типо расписание")
-//"сдесь инва по автобусу зарядке и кнопка чата",
+        val listCall = settingsConnection().getRoutes(Connection.CurrentUser!!.idUser)
+        listCall.enqueue(object : Callback<List<Route>> {
+            override fun onResponse(call: Call<List<Route>>, response: Response<List<Route>>) {
+                val routes = response.body() ?: emptyList()
+                //Если запрос сработал
+            }
+
+            override fun onFailure(call: Call<List<Route>>, t: Throwable) {
+                //Если запрос не сработал
+            }
+        })
     }
 }
 

@@ -1,4 +1,4 @@
- package com.example.sitroutedriverapp.screens
+package com.example.sitroutedriverapp.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -41,12 +41,12 @@ fun ChatScreen() {
             call: Call<List<Message>>,
             response: Response<List<Message>>
         ) {
-            val messagesList = response.body()?: emptyList()
+            val messagesList = response.body() ?: emptyList()
             messages = messagesList;
         }
 
         override fun onFailure(call: Call<List<Message>>, t: Throwable) {
-           // messages.add(Message(1, "ошибка", null, null, "", null, null))
+            // messages.add(Message(1, "ошибка", null, null, "", null, null))
         }
     })
     Scaffold(
@@ -69,11 +69,11 @@ fun ChatScreen() {
     }
 }
 
- @Composable
- fun Messages(messages: List<Message>){
-     LazyColumn {
-             items(messages){message ->
-                 Text(message.value)
-             }
-     }
- }
+@Composable
+fun Messages(messages: List<Message>) {
+    LazyColumn {
+        items(messages) { message ->
+            Text(message.value)
+        }
+    }
+}
