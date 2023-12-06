@@ -22,14 +22,14 @@ fun ButtonNavigation(navigation: NavHostController, modifier: Modifier = Modifie
     val selectedItem = remember { mutableStateOf(Routes.Home.route) }
     NavigationBar {
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Email, contentDescription = "") },
+            icon = { Icon(Icons.Filled.Map, contentDescription = "") },
             label = { Text("Карта") },
             selected = selectedItem.value == Routes.Home.route,
             onClick = { navigation.navigate(Routes.Home.route)
                 selectedItem.value = Routes.Home.route }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Map, contentDescription = "") },
+            icon = { Icon(Icons.Filled.Message, contentDescription = "") },
             label = { Text("Чат") },
             selected = selectedItem.value == Routes.Chat.route,
             onClick = { navigation.navigate(Routes.Chat.route)

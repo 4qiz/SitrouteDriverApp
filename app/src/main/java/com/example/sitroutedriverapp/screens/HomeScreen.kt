@@ -30,7 +30,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sitroutedriverapp.R
 import com.example.sitroutedriverapp.Routes
 import com.example.sitroutedriverapp.component.ButtonNavigation
-import com.example.sitroutedriverapp.component.LockScreenOrientation
 import okhttp3.Route
 
 @Composable
