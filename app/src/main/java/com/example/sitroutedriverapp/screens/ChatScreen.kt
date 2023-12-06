@@ -55,15 +55,15 @@ fun ChatScreen() {
                 TextField(value = newMessage, onValueChange = { newMessage = it })
                 IconButton(onClick = {
                     val message = Message(
-                        idMessage = 0,
                         value = newMessage,
                         idSender = Connection.CurrentUser!!.idUser,
-                        idRecipient = null,
                         time = LocalDateTime.now().toString()
                     )
-                    if (newMessage != null) {
-                        settingsConnection().sendMessage(message)
+                    if (newMessage != "") {
+                        val response = settingsConnection().sendMessage(message)
+                        if(response.isSuccessful){
                         messages = messages + message
+                        }
                     }
                 }) { Icon(Icons.Filled.Send, contentDescription = "") }
             }
