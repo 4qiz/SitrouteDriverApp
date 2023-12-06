@@ -4,7 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsTransit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Message
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -15,10 +14,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.sitroutedriverapp.Routes
-
+import javax.xml.transform.Source
 
 @Composable
-fun NavButtonNavugation(navigation: NavHostController, modifier: Modifier = Modifier) {
+fun ButtonNavigation(navigation: NavHostController, modifier: Modifier = Modifier) {
     val selectedItem = remember { mutableStateOf(Routes.Home.route) }
     NavigationBar {
         NavigationBarItem(
@@ -26,14 +25,13 @@ fun NavButtonNavugation(navigation: NavHostController, modifier: Modifier = Modi
             label = { Text("Карта") },
             selected = selectedItem.value == Routes.Home.route,
             onClick = { navigation.navigate(Routes.Home.route)
-                         selectedItem.value = Routes.Home.route }
+                selectedItem.value = Routes.Home.route }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Message, contentDescription = "") },
             label = { Text("Чат") },
             selected = selectedItem.value == Routes.Chat.route,
-            onClick = { navigation.navigate(Routes.Chat.route)
-                         selectedItem.value = Routes.Chat.route}
+            onClick = { navigation.navigate(Routes.Chat.route) }
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.DirectionsTransit, contentDescription = "") },
