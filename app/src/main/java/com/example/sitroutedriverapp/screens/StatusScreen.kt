@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
 @Composable
-fun StatusScreen(navController: NavHostController){
+fun StatusScreen(){
     Column {
         Text("Тут скоро будут данные, но это не точно")
     }

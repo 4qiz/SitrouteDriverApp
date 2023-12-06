@@ -32,7 +32,7 @@ import com.example.sitroutedriverapp.component.ButtonNavigation
 import okhttp3.Route
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,15 +65,15 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                         LoginScreen(navController = navController)
                     }
                     composable(Routes.Home.route) {
-                        HomeScreen(navController = navController)
+                        HomeScreen()
                         itemSources.value = Routes.Home.route
                     }
                     composable(Routes.Status.route) {
-                        StatusScreen(navController = navController)
+                        StatusScreen()
                         itemSources.value = Routes.Status.route
                     }
                     composable(Routes.Chat.route) {
-                        StatusScreen(navController = navController)
+                        ChatScreen()
                         itemSources.value = Routes.Chat.route
                     }
                 }
