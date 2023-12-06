@@ -3,6 +3,7 @@ package com.example.sitroutedriverapp.component
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsTransit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -28,10 +29,11 @@ fun ButtonNavigation(navigation: NavHostController, modifier: Modifier = Modifie
                 selectedItem.value = Routes.Home.route }
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Message, contentDescription = "") },
+            icon = { Icon(Icons.Filled.Map, contentDescription = "") },
             label = { Text("Чат") },
             selected = selectedItem.value == Routes.Chat.route,
-            onClick = { navigation.navigate(Routes.Chat.route) }
+            onClick = { navigation.navigate(Routes.Chat.route)
+                selectedItem.value = Routes.Chat.route}
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.DirectionsTransit, contentDescription = "") },
