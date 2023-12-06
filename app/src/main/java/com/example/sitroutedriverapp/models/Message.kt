@@ -6,6 +6,6 @@ data class Message (
     val idSender: Int,
     val idRecipient: Int?,
     val time: String,
-    val idRecipientNavigation: User?,
-    val idSenderNavigation: User?
+    val idRecipientNavigation: User? = null,
+    val idSenderNavigation: User? = null
 )

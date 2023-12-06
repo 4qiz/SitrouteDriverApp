@@ -28,6 +28,7 @@ import com.example.sitroutedriverapp.settingsConnection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDateTime
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,8 +42,7 @@ fun ChatScreen() {
             call: Call<List<Message>>,
             response: Response<List<Message>>
         ) {
-            val messagesList = response.body() ?: emptyList()
-            messages = messagesList;
+            messages = response.body() ?: emptyList()
         }
 
         override fun onFailure(call: Call<List<Message>>, t: Throwable) {
@@ -51,13 +51,22 @@ fun ChatScreen() {
     })
     Scaffold(
         bottomBar = {
-            Row (Modifier.padding( horizontal = 5.dp)){
+            Row(Modifier.padding(horizontal = 5.dp)) {
                 TextField(value = newMessage, onValueChange = { newMessage = it })
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Filled.Send, contentDescription = "")
-                }
+                IconButton(onClick = {
+                    val message = Message(
+                        idMessage = 0,
+                        value = newMessage,
+                        idSender = Connection.CurrentUser!!.idUser,
+                        idRecipient = null,
+                        time = LocalDateTime.now().toString()
+                    )
+                    if (newMessage != null) {
+                        settingsConnection().sendMessage(message)
+                        messages = messages + message
+                    }
+                }) { Icon(Icons.Filled.Send, contentDescription = "") }
             }
-
         }) { innerPadding ->
         Column(
             modifier = Modifier
@@ -77,3 +86,4 @@ fun Messages(messages: List<Message>) {
         }
     }
 }
+
