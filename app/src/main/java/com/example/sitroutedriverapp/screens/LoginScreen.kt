@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -50,14 +51,14 @@ fun LoginScreen(navController: NavHostController) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = R.drawable.sitroute_modile),
             contentDescription = null,
-            modifier = Modifier.padding(top = 80.dp).size(100.dp),
+            modifier = Modifier.padding(top = 20.dp).size(100.dp),
 
         )
         Text(
@@ -66,7 +67,7 @@ fun LoginScreen(navController: NavHostController) {
             fontSize = 38.sp,
         )
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
