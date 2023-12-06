@@ -48,8 +48,9 @@ fun HomeScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScaffoldWithTopBar(navController: NavHostController) {
+    val itemSources = remember { mutableStateOf(Routes.Login.route) }
     Scaffold(
-        bottomBar = { ButtonNavigation(navigation = navController)}
+        bottomBar = {if(itemSources.value != Routes.Login.route) ButtonNavigation(navigation = navController)}
     ){
             innerPadding ->
         Column(
@@ -58,7 +59,6 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
 
-            val itemSources = remember { mutableStateOf(Routes.Login.route) }
             Column {
                 NavHost(navController = navController, startDestination = Routes.Login.route) {
                     composable(Routes.Login.route) {
@@ -77,9 +77,10 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                         itemSources.value = Routes.Chat.route
                     }
                 }
+            }
+        }
     }
-    }
-}}
+}
 
 @Composable
 private fun DrawerHeader() {
