@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -24,8 +25,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.example.sitroutedriverapp.Connection
 import com.example.sitroutedriverapp.models.Message
 import com.example.sitroutedriverapp.settingsConnection
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,13 +66,17 @@ fun ChatScreen() {
     Scaffold(
         bottomBar = {
             Row(Modifier.padding(horizontal = 5.dp)) {
-                TextField(value = newMessage, onValueChange = { newMessage = it })
+                TextField(
+                    value = newMessage,
+                    onValueChange = { newMessage = it },
+                    Modifier.weight(0.9f)
+                )
                 IconButton(onClick = {
                     val message = Message(
                         value = newMessage.trim(),
                         idSender = Connection.CurrentUser!!.idUser
                     )
-                    if (newMessage != "") {
+                    if (newMessage.trim() != "") {
                         val listCall = settingsConnection().sendMessage(message)
                         listCall.enqueue(object : Callback<Unit> {
                             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
@@ -81,7 +89,7 @@ fun ChatScreen() {
                             }
                         })
                     }
-                }) { Icon(Icons.Filled.Send, contentDescription = "") }
+                }, Modifier.weight(0.1f)) { Icon(Icons.Filled.Send, contentDescription = "") }
             }
         }) { innerPadding ->
         Column(
@@ -96,10 +104,15 @@ fun ChatScreen() {
 
 @Composable
 fun Messages(messages: List<Message>) {
-    LazyColumn {
+    val lazyColumnListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    LazyColumn(state = lazyColumnListState) {
         items(messages) { message ->
             MessageListItem(message)
         }
+    }
+    LaunchedEffect(messages.size) {
+        lazyColumnListState.scrollToItem(messages.size - 1)
     }
 }
 
@@ -118,10 +131,12 @@ fun MessageListItem(message: Message) {
         Card(
             modifier = Modifier.widthIn(max = 340.dp),
             shape = СardShapeFor(message), // 3
-            colors = CardDefaults.cardColors( when {
-                isDriverMessage -> MaterialTheme.colorScheme.primary
-                else -> MaterialTheme.colorScheme.secondary
-            }),
+            colors = CardDefaults.cardColors(
+                when {
+                    isDriverMessage -> MaterialTheme.colorScheme.primary
+                    else -> MaterialTheme.colorScheme.secondary
+                }
+            ),
         ) {
             Text(
                 modifier = Modifier.padding(8.dp),
@@ -132,7 +147,8 @@ fun MessageListItem(message: Message) {
                 },
             )
         }
-        Text( // 4
+        Text(
+            // 4
             text = when {
                 isDriverMessage -> "Вы"
                 else -> "Диспетчер"
@@ -148,6 +164,7 @@ fun СardShapeFor(message: Message): Shape {
     return when {
         message.idSender == Connection.CurrentUser!!.idUser ->
             roundedCorners.copy(bottomEnd = CornerSize(0))
+
         else -> roundedCorners.copy(bottomStart = CornerSize(0))
     }
 }
