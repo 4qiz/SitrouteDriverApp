@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 @Composable
 fun StatusScreen(){
     Column {
+
         Text("Тут скоро будут данные, но это не точно")
     }
 }

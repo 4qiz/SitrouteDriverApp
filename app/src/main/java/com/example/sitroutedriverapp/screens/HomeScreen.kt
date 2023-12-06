@@ -1,6 +1,7 @@
 package com.example.sitroutedriverapp.screens
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sitroutedriverapp.R
 import com.example.sitroutedriverapp.Routes
 import com.example.sitroutedriverapp.component.ButtonNavigation
+import com.example.sitroutedriverapp.component.LockScreenOrientation
 import okhttp3.Route
 
 @Composable
