@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface MyApiService {
+interface ApiService {
     @GET("/drivers/{login}/{password}")
     fun getCurrentUser(@Path("login") login: String, @Path("password") password:String): Call<User>
 
@@ -21,5 +21,5 @@ interface MyApiService {
     fun getRoutes(@Path("idDriver") idDriver: Int): Call<List<Route>>
 
     @POST("/message")
-    fun sendMessage(@Body message: Message): Response<Unit>
+    fun sendMessage(@Body message: Message): Call<Unit>
 }
