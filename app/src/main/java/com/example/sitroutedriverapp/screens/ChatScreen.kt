@@ -110,7 +110,7 @@ fun Messages(messages: List<Message>) {
         items(messages) { message ->
             MessageListItem(message)
             LaunchedEffect(messages.size) {
-                lazyColumnListState.scrollToItem(messages.size - 1)
+                lazyColumnListState.animateScrollToItem(messages.size - 1, 1)
             }
         }
     }
