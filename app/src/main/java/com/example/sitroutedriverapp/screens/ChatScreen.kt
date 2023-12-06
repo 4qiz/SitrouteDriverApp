@@ -56,8 +56,7 @@ fun ChatScreen() {
                 IconButton(onClick = {
                     val message = Message(
                         value = newMessage,
-                        idSender = Connection.CurrentUser!!.idUser,
-                        time = LocalDateTime.now().toString()
+                        idSender = Connection.CurrentUser!!.idUser
                     )
                     if (newMessage != "") {
                         val response = settingsConnection().sendMessage(message)

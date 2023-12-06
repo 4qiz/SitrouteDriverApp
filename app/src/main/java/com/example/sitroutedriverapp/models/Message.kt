@@ -12,7 +12,7 @@ data class Message (
     @SerializedName("idRecipient")
     val idRecipient: Int? = null,
     @SerializedName("time")
-    val time: String,
+    val time: String? = null,
     @SerializedName("idRecipientNavigation")
     val idRecipientNavigation: User? = null,
     @SerializedName("idSenderNavigation")
