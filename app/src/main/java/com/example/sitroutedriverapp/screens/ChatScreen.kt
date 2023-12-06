@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,7 +29,21 @@ import retrofit2.Response
 @Composable
 fun ChatScreen() {
     var newMessage by rememberSaveable { mutableStateOf("") }
-    val messages = mutableListOf<Message>()
+    var messages by rememberSaveable { mutableStateOf<List<Message>>(emptyList()) }
+    val listCall = settingsConnection().getMessages(Connection.CurrentUser!!.idUser)
+    listCall.enqueue(object : Callback<List<Message>> {
+        override fun onResponse(
+            call: Call<List<Message>>,
+            response: Response<List<Message>>
+        ) {
+            val messagesList = response.body()?: emptyList()
+            messages = messagesList;
+        }
+
+        override fun onFailure(call: Call<List<Message>>, t: Throwable) {
+           // messages.add(Message(1, "ошибка", null, null, "", null, null))
+        }
+    })
     Scaffold(
         bottomBar = {
             TextField(value = newMessage, onValueChange = { newMessage = it })
@@ -37,25 +53,16 @@ fun ChatScreen() {
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            val listCall = settingsConnection().getMessages(Connection.CurrentUser!!.idUser)
-            listCall.enqueue(object : Callback<List<Message>> {
-                override fun onResponse(
-                    call: Call<List<Message>>,
-                    response: Response<List<Message>>
-                ) {
-                    val messagesList = response.body()
-                    messages.addAll(messagesList!!)
-                }
-
-                override fun onFailure(call: Call<List<Message>>, t: Throwable) {
-                    messages.add(Message(1, "ошибка", null, null, "", null, null))
-                }
-            })
-            Column {
-                for (message in messages) {
-                    Text(message.value)
-                }
-            }
+            Messages(messages)
         }
     }
 }
+
+ @Composable
+ fun Messages(messages: List<Message>){
+     LazyColumn {
+             items(messages){message ->
+                 Text(message.value)
+             }
+     }
+ }
