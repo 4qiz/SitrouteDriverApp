@@ -48,6 +48,7 @@ fun LoginScreen(navController: NavHostController) {
     var password by rememberSaveable { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

@@ -22,7 +22,7 @@ fun ButtonNavigation(navigation: NavHostController, modifier: Modifier = Modifie
     val selectedItem = remember { mutableStateOf(Routes.Home.route) }
     NavigationBar {
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Map, contentDescription = "") },
+            icon = { Icon(Icons.Filled.Map , contentDescription = "") },
             label = { Text("Карта") },
             selected = selectedItem.value == Routes.Home.route,
             onClick = { navigation.navigate(Routes.Home.route)
