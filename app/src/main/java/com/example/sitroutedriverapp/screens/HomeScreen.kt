@@ -2,6 +2,8 @@ package com.example.sitroutedriverapp.screens
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,16 +12,22 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key.Companion.Ro
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,6 +48,7 @@ import retrofit2.Response
 
 @Composable
 fun HomeScreen() {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,17 +56,32 @@ fun HomeScreen() {
     ) {
         DrawerHeader()
         Text("Типо расписание")
-        val listCall = settingsConnection().getRoutes(Connection.CurrentUser!!.idUser)
-        listCall.enqueue(object : Callback<List<Route>> {
-            override fun onResponse(call: Call<List<Route>>, response: Response<List<Route>>) {
-                val routes = response.body() ?: emptyList()
-                //Если запрос сработал
-            }
+        RoutesView()
+    }
+}
 
-            override fun onFailure(call: Call<List<Route>>, t: Throwable) {
-                //Если запрос не сработал
-            }
-        })
+@Composable
+fun RoutesView() {
+    var errorMessage by rememberSaveable{mutableStateOf("Ошибка")}
+    var routes by rememberSaveable { mutableStateOf<List<Route>>(emptyList()) }
+    val listCall = settingsConnection().getRoutes(Connection.CurrentUser!!.idUser)
+    listCall.enqueue(object : Callback<List<Route>> {
+        override fun onResponse(call: Call<List<Route>>, response: Response<List<Route>>) {
+            val routesList = response.body() ?: emptyList()
+            routes = routesList
+            //Если запрос сработал
+        }
+
+
+        override fun onFailure(call: Call<List<Route>>, t: Throwable) {
+            errorMessage = "Пока"
+            //Если запрос не сработал
+        }
+    })
+    LazyColumn {
+        items(routes) { route ->
+            Text(route.name)
+        }
     }
 }
 
@@ -65,6 +89,7 @@ fun HomeScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScaffoldWithTopBar(navController: NavHostController) {
+
     val itemSources = remember { mutableStateOf(Routes.Login.route) }
     Scaffold(
         bottomBar = {if(itemSources.value != Routes.Login.route) ButtonNavigation(navigation = navController)}

@@ -1,22 +1,20 @@
 package com.example.sitroutedriverapp.screens
 
-import android.content.pm.PackageManager
-import androidx.compose.foundation.layout.Column
+import android.content.Context
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.core.app.ActivityCompat
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.compose.rememberNavController
-import com.example.sitroutedriverapp.R
-import com.example.sitroutedriverapp.Routes
+
 
 @Composable
 fun ScreenMain(){
 
     val navController = rememberNavController()
     ScaffoldWithTopBar(navController = navController)
-
 }
+
+
 
