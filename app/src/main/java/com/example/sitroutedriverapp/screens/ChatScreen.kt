@@ -1,17 +1,25 @@
 package com.example.sitroutedriverapp.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -20,15 +28,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.sitroutedriverapp.Connection
 import com.example.sitroutedriverapp.models.Message
 import com.example.sitroutedriverapp.settingsConnection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDateTime
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +65,7 @@ fun ChatScreen() {
                 TextField(value = newMessage, onValueChange = { newMessage = it })
                 IconButton(onClick = {
                     val message = Message(
-                        value = newMessage,
+                        value = newMessage.trim(),
                         idSender = Connection.CurrentUser!!.idUser
                     )
                     if (newMessage != "") {
@@ -88,8 +98,56 @@ fun ChatScreen() {
 fun Messages(messages: List<Message>) {
     LazyColumn {
         items(messages) { message ->
-            Text(message.value)
+            MessageListItem(message)
         }
     }
 }
 
+@Composable
+fun MessageListItem(message: Message) {
+    val isDriverMessage = message.idSender == Connection.CurrentUser!!.idUser
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        horizontalAlignment = when { // 2
+            isDriverMessage -> Alignment.End
+            else -> Alignment.Start
+        },
+    ) {
+        Card(
+            modifier = Modifier.widthIn(max = 340.dp),
+            shape = СardShapeFor(message), // 3
+            colors = CardDefaults.cardColors( when {
+                isDriverMessage -> MaterialTheme.colorScheme.primary
+                else -> MaterialTheme.colorScheme.secondary
+            }),
+        ) {
+            Text(
+                modifier = Modifier.padding(8.dp),
+                text = message.value,
+                color = when {
+                    isDriverMessage -> MaterialTheme.colorScheme.onPrimary
+                    else -> MaterialTheme.colorScheme.onSecondary
+                },
+            )
+        }
+        Text( // 4
+            text = when {
+                isDriverMessage -> "Вы"
+                else -> "Диспетчер"
+            },
+            fontSize = 12.sp,
+        )
+    }
+}
+
+@Composable
+fun СardShapeFor(message: Message): Shape {
+    val roundedCorners = RoundedCornerShape(16.dp)
+    return when {
+        message.idSender == Connection.CurrentUser!!.idUser ->
+            roundedCorners.copy(bottomEnd = CornerSize(0))
+        else -> roundedCorners.copy(bottomStart = CornerSize(0))
+    }
+}
