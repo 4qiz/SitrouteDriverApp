@@ -82,7 +82,7 @@ fun Schedules(schedules: List<Schedule>) {
             val time = LocalDateTime.parse(schedule.time)
             var isNext = LocalDateTime.now() < time
             Text(
-                "${time} - ${schedule.idBusStationNavigation.name}",
+                "${time.toLocalTime()} - ${schedule.idBusStationNavigation.name}",
                 fontWeight = if (isNext) FontWeight.Bold
                 else FontWeight.Normal,
                 fontSize = if (isNext) 20.sp else 16.sp
