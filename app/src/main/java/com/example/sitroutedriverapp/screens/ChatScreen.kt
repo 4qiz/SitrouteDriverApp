@@ -108,15 +108,15 @@ fun ChatScreen() {
 @Composable
 fun Messages(messages: List<Message>) {
     val lazyColumnListState = rememberLazyListState()
-    LazyColumn() {
+    LazyColumn(state = lazyColumnListState) {
         items(messages) { message ->
             MessageListItem(message)
-            /*LaunchedEffect(messages.size) {
+            LaunchedEffect(messages.size) {
+                if(messages.isEmpty())
                 lazyColumnListState.animateScrollToItem(messages.size - 1, 1)
-            }*/
+            }
         }
     }
-
 }
 
 @Composable

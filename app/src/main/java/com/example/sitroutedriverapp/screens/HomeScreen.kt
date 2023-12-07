@@ -1,12 +1,8 @@
 package com.example.sitroutedriverapp.screens
 
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,24 +19,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.Ro
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.sitroutedriverapp.Connection
 import com.example.sitroutedriverapp.R
 import com.example.sitroutedriverapp.Routes
 import com.example.sitroutedriverapp.component.ButtonNavigation
-import com.example.sitroutedriverapp.models.Message
-import com.example.sitroutedriverapp.models.Route
+import com.example.sitroutedriverapp.models.Schedule
 import com.example.sitroutedriverapp.settingsConnection
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,29 +47,36 @@ fun HomeScreen() {
             .background(MaterialTheme.colorScheme.background)
     ) {
         DrawerHeader()
-        Text("--В разработке--")
-             RoutesView()
+        RouteView()
     }
 }
 
 @Composable
-fun RoutesView() {
-    var errorMessage by remember{mutableStateOf("Ошибка")}
-    var route by remember { mutableStateOf<Route?>(null) }
-    val call = settingsConnection().getRoutes(Connection.CurrentUser!!.idUser)
-    call.enqueue(object : Callback<Route> {
-        override fun onResponse(call: Call<Route>, response: Response<Route>) {
-            route = response.body()
-            println()
-            //Если запрос сработал
+fun RouteView() {
+    var errorMessage by remember { mutableStateOf("Ошибка") }
+    var schedules by remember { mutableStateOf<List<Schedule>>(emptyList()) }
+
+    val listCall = settingsConnection().getSchedules(Connection.CurrentUser!!.idUser)
+    listCall.enqueue(object : Callback<List<Schedule>> {
+        override fun onResponse(call: Call<List<Schedule>>, response: Response<List<Schedule>>) {
+            schedules = response.body() ?: emptyList()
         }
 
-        override fun onFailure(call: Call<Route>, t: Throwable) {
-            errorMessage = "Пока"
-            //Если запрос не сработал
+        override fun onFailure(call: Call<List<Schedule>>, t: Throwable) {
+
         }
     })
-    Text(route?.idRoute.toString())
+    Schedules(schedules)
+}
+
+@Composable
+fun Schedules(schedules: List<Schedule>) {
+    LazyColumn() {
+        items(schedules) { schedule ->
+            Text("${schedule.time.substring(schedule.time.indexOf('T')+1)} - " +
+                    "${schedule.idBusStationNavigation.name}")
+        }
+    }
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -87,9 +86,8 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
 
     val itemSources = remember { mutableStateOf(Routes.Login.route) }
     Scaffold(
-        bottomBar = {if(itemSources.value != Routes.Login.route) ButtonNavigation(navigation = navController)}
-    ){
-            innerPadding ->
+        bottomBar = { if (itemSources.value != Routes.Login.route) ButtonNavigation(navigation = navController) }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding),

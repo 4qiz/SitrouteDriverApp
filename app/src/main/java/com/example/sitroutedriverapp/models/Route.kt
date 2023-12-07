@@ -7,5 +7,4 @@ data class Route(
     val startTime: String,
     val endTime: String,
     val buses: List<Bus>,
-    val routeByBusStations: List<RouteByBusStations>
 )

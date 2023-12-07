@@ -2,9 +2,9 @@ package com.example.sitroutedriverapp
 
 import com.example.sitroutedriverapp.models.Message
 import com.example.sitroutedriverapp.models.Route
+import com.example.sitroutedriverapp.models.Schedule
 import com.example.sitroutedriverapp.models.User
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -17,8 +17,8 @@ interface ApiService {
     @GET("/chat/{idDriver}")
     fun getMessages(@Path("idDriver") idDriver: Int): Call<List<Message>>
 
-    @GET("/routesByBusStation/{idDriver}")
-    fun getRoutes(@Path("idDriver") idDriver: Int): Call<Route>
+    @GET("/schedule/{idDriver}")
+    fun getSchedules(@Path("idDriver") idDriver: Int): Call<List<Schedule>>
 
     @POST("/message")
     fun sendMessage(@Body message: Message): Call<Unit>
