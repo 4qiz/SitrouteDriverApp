@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -49,8 +50,8 @@ import retrofit2.Response
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen() {
-    var newMessage by rememberSaveable { mutableStateOf("") }
-    var messages by rememberSaveable { mutableStateOf<List<Message>>(emptyList()) }
+    var newMessage by remember { mutableStateOf("") }
+    var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
     val listCall = settingsConnection().getMessages(Connection.CurrentUser!!.idUser)
     listCall.enqueue(object : Callback<List<Message>> {
         override fun onResponse(
@@ -107,13 +108,12 @@ fun ChatScreen() {
 @Composable
 fun Messages(messages: List<Message>) {
     val lazyColumnListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-    LazyColumn(state = lazyColumnListState) {
+    LazyColumn() {
         items(messages) { message ->
             MessageListItem(message)
-            LaunchedEffect(messages.size) {
+            /*LaunchedEffect(messages.size) {
                 lazyColumnListState.animateScrollToItem(messages.size - 1, 1)
-            }
+            }*/
         }
     }
 

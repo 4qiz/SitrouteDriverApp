@@ -55,7 +55,7 @@ fun HomeScreen() {
             .background(MaterialTheme.colorScheme.background)
     ) {
         DrawerHeader()
-        Text("Типо расписание")
+        Text("--В разработке--")
         RoutesView()
     }
 }
