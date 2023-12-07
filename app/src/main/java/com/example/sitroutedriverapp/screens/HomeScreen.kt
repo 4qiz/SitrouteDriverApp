@@ -33,6 +33,7 @@ import com.example.sitroutedriverapp.R
 import com.example.sitroutedriverapp.Routes
 import com.example.sitroutedriverapp.component.ButtonNavigation
 import com.example.sitroutedriverapp.models.Schedule
+import com.example.sitroutedriverapp.PressBackAgainToExit
 import com.example.sitroutedriverapp.settingsConnection
 import retrofit2.Call
 import retrofit2.Callback
@@ -113,6 +114,7 @@ fun ScaffoldWithTopBar(navController: NavHostController) {
                     }
                 }
             }
+            PressBackAgainToExit()
         }
     }
 }
