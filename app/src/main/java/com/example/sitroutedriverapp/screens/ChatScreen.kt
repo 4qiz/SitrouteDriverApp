@@ -50,6 +50,7 @@ import retrofit2.Response
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen() {
+    var isAddMessage by remember { mutableStateOf(false) }
     var newMessage by remember { mutableStateOf("") }
     var messages by remember { mutableStateOf<List<Message>>(emptyList()) }
     val listCall = settingsConnection().getMessages(Connection.CurrentUser!!.idUser)
@@ -59,6 +60,7 @@ fun ChatScreen() {
             response: Response<List<Message>>
         ) {
             messages = response.body() ?: emptyList()
+            isAddMessage = true
         }
 
         override fun onFailure(call: Call<List<Message>>, t: Throwable) {
@@ -84,6 +86,7 @@ fun ChatScreen() {
                             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                                 messages = messages + message
                                 newMessage = ""
+                                isAddMessage = true
                             }
 
                             override fun onFailure(call: Call<Unit>, t: Throwable) {
@@ -100,20 +103,21 @@ fun ChatScreen() {
                 .padding(innerPadding),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Messages(messages)
+            Messages(messages, isAddMessage)
+            isAddMessage = false
         }
     }
 }
 
 @Composable
-fun Messages(messages: List<Message>) {
+fun Messages(messages: List<Message>, isAddMessage: Boolean) {
     val lazyColumnListState = rememberLazyListState()
     LazyColumn(state = lazyColumnListState) {
         items(messages) { message ->
             MessageListItem(message)
             LaunchedEffect(messages.size) {
-                if(messages.isEmpty())
-                lazyColumnListState.animateScrollToItem(messages.size - 1, 1)
+                if(!messages.isEmpty() && isAddMessage)
+                    lazyColumnListState.animateScrollToItem(messages.size - 1, 1)
             }
         }
     }
