@@ -23,6 +23,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -37,6 +40,8 @@ import com.example.sitroutedriverapp.settingsConnection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Composable
 fun HomeScreen() {
@@ -71,10 +76,16 @@ fun RouteView() {
 
 @Composable
 fun Schedules(schedules: List<Schedule>) {
-    LazyColumn() {
+    LazyColumn {
         items(schedules) { schedule ->
-            Text("${schedule.time.substring(schedule.time.indexOf('T')+1)} - " +
-                    "${schedule.idBusStationNavigation.name}")
+            val time = LocalDateTime.parse(schedule.time)
+            var isNext = LocalDateTime.now() < time
+            Text(
+                "${time} - ${schedule.idBusStationNavigation.name}",
+                fontWeight = if (isNext) FontWeight.Bold
+                else FontWeight.Normal,
+                fontSize = if (isNext) 20.sp else 16.sp
+            )
         }
     }
 }
