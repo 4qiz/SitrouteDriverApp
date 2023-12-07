@@ -48,14 +48,13 @@ import retrofit2.Response
 
 @Composable
 fun HomeScreen() {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
         DrawerHeader()
-        Text("Типо расписание")
+        Text("В разработке")
         RoutesView()
     }
 }

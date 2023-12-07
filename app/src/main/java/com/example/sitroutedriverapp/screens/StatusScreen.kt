@@ -13,7 +13,7 @@ import java.util.jar.Manifest
 fun StatusScreen(){
     Column {
 
-        Text("Тут скоро будут данные, но это не точно")
+        Text("В разработке")
 
     }
 }
