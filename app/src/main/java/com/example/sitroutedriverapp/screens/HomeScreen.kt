@@ -56,14 +56,14 @@ fun HomeScreen() {
     ) {
         DrawerHeader()
         Text("--В разработке--")
-        RoutesView()
+             RoutesView()
     }
 }
 
 @Composable
 fun RoutesView() {
-    var errorMessage by rememberSaveable{mutableStateOf("Ошибка")}
-    var route by rememberSaveable { mutableStateOf<Route?>(null) }
+    var errorMessage by remember{mutableStateOf("Ошибка")}
+    var route by remember { mutableStateOf<Route?>(null) }
     val call = settingsConnection().getRoutes(Connection.CurrentUser!!.idUser)
     call.enqueue(object : Callback<Route> {
         override fun onResponse(call: Call<Route>, response: Response<Route>) {
