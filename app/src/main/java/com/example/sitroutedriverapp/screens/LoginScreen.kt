@@ -58,9 +58,11 @@ fun LoginScreen(navController: NavHostController) {
         Image(
             painter = painterResource(id = R.drawable.sitroute_modile),
             contentDescription = null,
-            modifier = Modifier.padding(top = 20.dp).size(100.dp),
+            modifier = Modifier
+                .padding(top = 20.dp)
+                .size(100.dp),
 
-        )
+            )
         Text(
             "Sitroute",
             modifier = Modifier.padding(0.dp, 5.dp, 0.dp, 0.dp),
@@ -76,9 +78,11 @@ fun LoginScreen(navController: NavHostController) {
                 modifier = Modifier.padding(0.dp, 10.dp),
                 fontSize = 28.sp,
             )
-            TextField(value = login,
+            TextField(
+                value = login,
                 onValueChange = { login = it },
-                singleLine = true,)
+                singleLine = true,
+            )
             Text(
                 "Пароль",
                 modifier = Modifier.padding(0.dp, 10.dp),
@@ -106,19 +110,20 @@ fun LoginScreen(navController: NavHostController) {
 
                     val description = if (passwordVisible) "Hide password" else "Show password"
 
-                    IconButton(onClick = {passwordVisible = !passwordVisible}){
-                        Icon(imageVector  = image, description)
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(imageVector = image, description)
                     }
                 }
             )
 
 
-            Button(modifier = Modifier.width(270.dp).padding(0.dp,20.dp,0.dp,0.dp),
+            Button(modifier = Modifier
+                .width(270.dp)
+                .padding(0.dp, 20.dp, 0.dp, 0.dp),
                 onClick = {
-                val user = settingsConnection().getCurrentUser(login, password)
-                user.enqueue(object : Callback<User> {
-                    override fun onResponse(call: Call<User>, response: Response<User>) {
-                        if (response.isSuccessful) {
+                    val user = settingsConnection().getCurrentUser(login, password)
+                    user.enqueue(object : Callback<User> {
+                        override fun onResponse(call: Call<User>, response: Response<User>) {
                             val currentUser = response.body()
                             if (currentUser?.idUser == 0) {
                                 errorMessage = "* Неправильный логин или пароль"
@@ -129,17 +134,17 @@ fun LoginScreen(navController: NavHostController) {
                                 errorMessage = "У вас нет прав для этого приложения"
                             }
                         }
-                    }
 
-                    override fun onFailure(call: Call<User>, t: Throwable) {
-                        errorMessage = "Ошибка"
+                        override fun onFailure(call: Call<User>, t: Throwable) {
+                            errorMessage = "Ошибка подключения"
+                        }
                     }
-                }
                     )
-            }) {
-                Text("Войти",
+                }) {
+                Text(
+                    "Войти",
                     fontSize = 28.sp,
-                    )
+                )
             }
         }
     }
