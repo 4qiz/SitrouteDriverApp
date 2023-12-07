@@ -52,7 +52,6 @@ fun HomeScreen() {
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        DrawerHeader()
         RouteView()
     }
 }
@@ -88,57 +87,5 @@ fun Schedules(schedules: List<Schedule>) {
                 fontSize = if (isNext) 20.sp else 16.sp
             )
         }
-    }
-}
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ScaffoldWithTopBar(navController: NavHostController) {
-
-    val itemSources = remember { mutableStateOf(Routes.Login.route) }
-    Scaffold(
-        bottomBar = { if (itemSources.value != Routes.Login.route) ButtonNavigation(navigation = navController) }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-
-            Column {
-                NavHost(navController = navController, startDestination = Routes.Login.route) {
-                    composable(Routes.Login.route) {
-                        LoginScreen(navController = navController)
-                    }
-                    composable(Routes.Home.route) {
-                        HomeScreen()
-                        itemSources.value = Routes.Home.route
-                    }
-                    composable(Routes.Status.route) {
-                        StatusScreen()
-                        itemSources.value = Routes.Status.route
-                    }
-                    composable(Routes.Chat.route) {
-                        ChatScreen()
-                        itemSources.value = Routes.Chat.route
-                    }
-                }
-            }
-            PressBackAgainToExit()
-        }
-    }
-}
-
-@Composable
-private fun DrawerHeader() {
-    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            painter = painterResource(id = R.drawable.sitroute_modile),
-            contentDescription = null,
-            //tint = MaterialTheme.colorScheme.primaryContainer,
-            modifier = Modifier.height(50.dp)
-        )
-        Text(text = "Sitroute", fontSize = 28.sp)
     }
 }
