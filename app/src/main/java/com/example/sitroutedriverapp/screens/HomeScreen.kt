@@ -1,11 +1,14 @@
 package com.example.sitroutedriverapp.screens
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -74,14 +77,20 @@ fun RouteView() {
     Schedules(schedules)
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Schedules(schedules: List<Schedule>) {
-    LazyColumn {
-        items(schedules) { schedule ->
-            val time = LocalDateTime.parse(schedule.time)
-            var isNext = LocalDateTime.now() < time
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        items(schedules.size) { index ->
+            val time = LocalDateTime.parse(schedules[index].time)
+            var isNext : Boolean
+            if (index > 0)
+                isNext = LocalDateTime.now() < time
+                        && LocalDateTime.now() > LocalDateTime.parse(schedules[index - 1].time)
+            else
+                isNext = schedules.all { LocalDateTime.parse(it.time) > LocalDateTime.now() }
             Text(
-                "${time.toLocalTime()} - ${schedule.idBusStationNavigation.name}",
+                "${time.toLocalTime()} - ${schedules[index].idBusStationNavigation.name}",
                 fontWeight = if (isNext) FontWeight.Bold
                 else FontWeight.Normal,
                 fontSize = if (isNext) 20.sp else 16.sp
